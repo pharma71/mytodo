@@ -225,13 +225,15 @@ function my_todo_frontend_form() {
     return $output;
 }
 
-add_filter( 'the_content', 'my_todo_content_filter');
-function my_todo_content_filter( $content ) {
-
-    $original_content = $content ; // preserve the original ...
-    $add_before_content =  '' ; // This will be added before the content.. 
-    $add_after_content =  '<div>Thank you for using awesome MY Todo Plugin</div>' ; // This will be added after the content.. 
-    $content = $add_before_content . $original_content .  $add_after_content;
+// Filter nur auf Seiten mit dem Shortcode aktivieren
+add_filter('the_content', 'my_todo_content_filter');
+function my_todo_content_filter($content) {
+    if (has_shortcode($content, 'my_todo_form')) {
+        $original_content = $content; // preserve the original ...
+        $add_before_content = ''; // This will be added before the content.. 
+        $add_after_content = '<div>Thank you for using awesome MY Todo Plugin</div>'; // This will be added after the content.. 
+        $content = $add_before_content . $original_content . $add_after_content;
+    }
 
     // Returns the content.
     return $content;
